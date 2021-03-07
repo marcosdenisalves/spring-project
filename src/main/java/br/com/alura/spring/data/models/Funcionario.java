@@ -1,5 +1,8 @@
 package br.com.alura.spring.data.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,24 +18,30 @@ public class Funcionario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String dataNascimento;
+	private String cpf;
+	private Double salario;
+	private Date dataContratacao;
 
 	@ManyToOne
 	private Cargo cargo;
-
+	
 	@ManyToOne
 	private Unidade unidade;
 
 	public Funcionario() {
 	}
-
-	public Funcionario(Integer id, String nome, Cargo cargo, Unidade unidade, String dataNascimento) {
+	
+	public Funcionario(Integer id, String nome, String cpf, Double salario, Date dataContracao, Cargo cargo,
+			Unidade unidade) {
 		this.id = id;
 		this.nome = nome;
+		this.cpf = cpf;
+		this.salario = salario;
+		this.dataContratacao = dataContracao;
 		this.cargo = cargo;
 		this.unidade = unidade;
-		this.dataNascimento = dataNascimento;
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -50,12 +59,28 @@ public class Funcionario {
 		this.nome = nome;
 	}
 
-	public String getDataNascimento() {
-		return dataNascimento;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public Double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Double salario) {
+		this.salario = salario;
+	}
+
+	public Date getDataContratacao() {
+		return dataContratacao;
+	}
+
+	public void setDataContratacao(Date dataContratacao) {
+		this.dataContratacao = dataContratacao;
 	}
 
 	public Cargo getCargo() {
@@ -72,5 +97,20 @@ public class Funcionario {
 
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Dados do Funcionário")
+			.append("\n1 - Nome: ").append(nome == null ? "______" : nome)
+			.append("\n2 - Cpf: ").append(cpf == null ? "______" : cpf)
+			.append("\n3 - Salário: ").append(salario == null ? "______" : String.format("%.2f", salario))
+			.append("\n4 - Data de contracao: ").append(dataContratacao == null ? "______" : sdf.format(dataContratacao))
+			.append("\n5 - Cargo: ").append(cargo.getId() == null ? "______" : cargo.getDescricao())
+			.append("\n6 - Unidade: ").append(unidade.getId() == null ? "______" : unidade.getNome());
+		
+		return builder.toString();
 	}
 }

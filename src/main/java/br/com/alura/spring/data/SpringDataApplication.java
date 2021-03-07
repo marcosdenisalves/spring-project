@@ -1,23 +1,22 @@
 package br.com.alura.spring.data;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import br.com.alura.spring.data.repository.FuncionarioRepository;
-import br.com.alura.spring.data.repository.UnidadeRepository;
-import br.com.alura.spring.data.service.CargoService;
+import br.com.alura.spring.data.service.FuncionarioService;
 
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
 
-	private final CargoService cargoService;
+	private final FuncionarioService funcionarioService;
 	private boolean system = true;
 	
-	public SpringDataApplication(CargoService cargoService, FuncionarioRepository fucionarioRepository, UnidadeRepository unidadeRepository) {
-		this.cargoService = cargoService;
+	public SpringDataApplication(FuncionarioService funcionarioService) {
+		this.funcionarioService = funcionarioService;
 	}
 	
 	public static void main(String[] args) {
@@ -26,31 +25,32 @@ public class SpringDataApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("\nQual ação você quer executar?");
-		System.out.println("Digite: 0 - Sair ");
-		System.out.println("Digite: 1 - Listar Cargos ");
-		System.out.println("Digite: 2 - Alterar Cargos ");
-		System.out.println("Digite: 3 - Inserir Cargos ");
-		System.out.println("Digite: 4 - Deletar Cargos ");
-
-		System.out.print("Selecione: ");
-		
 		while (system) {
+			System.out.println("\nQual ação você quer executar?");
+			System.out.println("Digite: 1 - Listar Funcionários Cadastrados ");
+			System.out.println("Digite: 2 - Alterar Funcionário ");
+			System.out.println("Digite: 3 - Cadastrar Funcionário ");
+			System.out.println("Digite: 4 - Deletar Funcionário ");
+			System.out.println("Digite: 0 - Sair ");
+	
+			System.out.print("Selecione: ");
+		
 			int action = sc.nextInt();
 			switch (action) {
 			case 1:
-				system = cargoService.listar();
+				funcionarioService.listar();
 				break;
 			case 2:
-				system = cargoService.alterar(sc);
+				funcionarioService.alterar(sc);
 				break;
 			case 3:
-				system = cargoService.inserir(sc);
+				funcionarioService.inserir(sc);
 				break;
 			case 4:
-				system = cargoService.inserir(sc);
+				funcionarioService.deletar(sc);
 				break;
 			case 0:
 				system = false;
