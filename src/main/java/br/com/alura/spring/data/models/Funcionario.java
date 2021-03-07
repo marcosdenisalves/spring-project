@@ -108,8 +108,8 @@ public class Funcionario {
 			.append("\n2 - Cpf: ").append(cpf == null ? "______" : cpf)
 			.append("\n3 - Salário: ").append(salario == null ? "______" : String.format("%.2f", salario))
 			.append("\n4 - Data de contracao: ").append(dataContratacao == null ? "______" : sdf.format(dataContratacao))
-			.append("\n5 - Cargo: ").append(cargo.getId() == null ? "______" : cargo.getDescricao())
-			.append("\n6 - Unidade: ").append(unidade.getId() == null ? "______" : unidade.getNome());
+			.append("\n5 - Cargo: ").append(cargo.getDescricao() == null ? "______" : cargo.getDescricao())
+			.append("\n6 - Unidade: ").append(unidade.getNome() == null ? "______" : unidade.getNome());
 		
 		return builder.toString();
 	}

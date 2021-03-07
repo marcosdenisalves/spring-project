@@ -32,10 +32,10 @@ public class FuncionarioService {
 
 	public void listar() {
 		List<Funcionario> funcionarios = (List<Funcionario>) listarFuncionarios();
-		if(!funcionarios.isEmpty()) {
+		if (!funcionarios.isEmpty()) {
 			System.out.println("\nDados carregados com sucesso!!");
 			System.out.println();
-		}else {
+		} else {
 			System.out.println("\nNenhum funcionário cadastrado.");
 			System.out.println();
 		}
@@ -70,10 +70,11 @@ public class FuncionarioService {
 		Funcionario novoFuncionario = new Funcionario();
 		novoFuncionario.setCargo(new Cargo());
 		novoFuncionario.setUnidade(new Unidade());
-		
-		Funcionario funcionario = preencherFuncionario(sc, novoFuncionario);
-		funcionario.setId(null);
 
+		Funcionario funcionario = preencherFuncionario(sc, novoFuncionario);
+
+		cargoRepository.save(funcionario.getCargo());
+		unidadeRepository.save(funcionario.getUnidade());
 		funcionarioRepository.save(funcionario);
 
 		if (funcionario != null && funcionario.getId() != null)
@@ -91,8 +92,6 @@ public class FuncionarioService {
 
 		Funcionario funcionario = optional.orElse(new Funcionario());
 
-		unidadeRepository.deleteById(funcionario.getUnidade().getId());
-		cargoRepository.deleteById(funcionario.getCargo().getId());
 		funcionarioRepository.deleteById(funcionario.getId());
 
 		System.out.println("removido com sucesso!!");
@@ -109,13 +108,15 @@ public class FuncionarioService {
 	private Funcionario preencherFuncionario(Scanner sc, Funcionario funcionario) {
 
 		try {
-			Integer value = 0;
+			Integer value = null;
 			do {
 				System.out.print(funcionario);
 				System.out.println("\n0 - finalizar alterações");
 				System.out.print("\nDigite o valor correspondente a alteração desejada: ");
+
 				value = sc.nextInt();
-				if (value != null || value instanceof Integer)
+
+				if (value != null)
 					switch (value) {
 					case 1:
 						sc.nextLine();
@@ -157,7 +158,6 @@ public class FuncionarioService {
 			} while (value != 0);
 
 			return funcionario;
-
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
