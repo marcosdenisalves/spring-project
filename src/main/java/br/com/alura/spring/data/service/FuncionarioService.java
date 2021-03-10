@@ -69,10 +69,11 @@ public class FuncionarioService {
 	
 	private List<Funcionario> listarPorNome(Scanner sc) {
 		sc.nextLine();
-		System.out.println("Informe o nome do funcionário");
+		listarFuncionarios();
+		System.out.print("\nInforme o nome do funcionário: ");
 		String nome = sc.nextLine();
 		List<Funcionario> list = funcionarioRepository.findByNome(nome);
-		list.forEach(f -> System.out.println(f.getNome()));
+		list.forEach(System.out::println);
 		return list;
 	}
 
@@ -102,6 +103,8 @@ public class FuncionarioService {
 		Funcionario funcionario = preencherFuncionario(sc, novoFuncionario);
 		funcionario.setId(null);
 
+		cargoRepository.save(funcionario.getCargo());
+		unidadeRepository.save(funcionario.getUnidade());
 		funcionarioRepository.save(funcionario);
 
 		if (funcionario != null && funcionario.getId() != null)
