@@ -19,7 +19,7 @@ public class Cargo {
 	private Integer id;
 	private String descricao;
 
-	@OneToMany
+	@OneToMany(mappedBy = "cargo")
 	private List<Funcionario> funcionarios = new ArrayList<>();
 	
 	public Cargo() {

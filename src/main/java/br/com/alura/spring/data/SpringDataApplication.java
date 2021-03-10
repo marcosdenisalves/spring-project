@@ -30,7 +30,7 @@ public class SpringDataApplication implements CommandLineRunner {
 
 		while (system) {
 			System.out.println("\nQual ação você quer executar?");
-			System.out.println("Digite: 1 - Listar Funcionários Cadastrados ");
+			System.out.println("Digite: 1 - Listar Funcionários ");
 			System.out.println("Digite: 2 - Alterar Funcionário ");
 			System.out.println("Digite: 3 - Cadastrar Funcionário ");
 			System.out.println("Digite: 4 - Deletar Funcionário ");
@@ -41,7 +41,7 @@ public class SpringDataApplication implements CommandLineRunner {
 			int action = sc.nextInt();
 			switch (action) {
 			case 1:
-				funcionarioService.listar();
+				funcionarioService.listar(sc);
 				break;
 			case 2:
 				funcionarioService.alterar(sc);

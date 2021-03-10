@@ -30,22 +30,50 @@ public class FuncionarioService {
 		this.cargoRepository = cargoRepository;
 	}
 
-	public void listar() {
-		List<Funcionario> funcionarios = (List<Funcionario>) listarFuncionarios();
-		if (!funcionarios.isEmpty()) {
+	public void listar(Scanner sc) {
+		System.out.println("Selecione uma das opções");
+		System.out.println("1 - listar por nome");
+		System.out.println("2 - listar todos");
+		System.out.println("0 - cancelar");
+		
+		int acao = sc.nextInt();
+		
+		switch (acao) {
+		case 1:
+			validaLista(listarPorNome(sc));
+			break;
+		case 2:
+			validaLista(listarFuncionarios());			
+			break;
+		case 0:
+			break;
+		}
+	}
+
+	private void validaLista(List<Funcionario> funcionarios) {
+		if(!funcionarios.isEmpty()) {
 			System.out.println("\nDados carregados com sucesso!!");
 			System.out.println();
-		} else {
+		}else {
 			System.out.println("\nNenhum funcionário cadastrado.");
 			System.out.println();
 		}
 	}
 
-	private Iterable<Funcionario> listarFuncionarios() {
+	private List<Funcionario> listarFuncionarios() {
 		Iterable<Funcionario> funcionarios = funcionarioRepository.findAll();
 		System.out.println();
 		funcionarios.forEach(c -> System.out.println(c.getId() + " - " + c.getNome()));
-		return funcionarios;
+		return (List<Funcionario>) funcionarios;
+	}
+	
+	private List<Funcionario> listarPorNome(Scanner sc) {
+		sc.nextLine();
+		System.out.println("Informe o nome do funcionário");
+		String nome = sc.nextLine();
+		List<Funcionario> list = funcionarioRepository.findByNome(nome);
+		list.forEach(f -> System.out.println(f.getNome()));
+		return list;
 	}
 
 	public void alterar(Scanner sc) {
@@ -70,11 +98,10 @@ public class FuncionarioService {
 		Funcionario novoFuncionario = new Funcionario();
 		novoFuncionario.setCargo(new Cargo());
 		novoFuncionario.setUnidade(new Unidade());
-
+		
 		Funcionario funcionario = preencherFuncionario(sc, novoFuncionario);
+		funcionario.setId(null);
 
-		cargoRepository.save(funcionario.getCargo());
-		unidadeRepository.save(funcionario.getUnidade());
 		funcionarioRepository.save(funcionario);
 
 		if (funcionario != null && funcionario.getId() != null)
@@ -92,12 +119,14 @@ public class FuncionarioService {
 
 		Funcionario funcionario = optional.orElse(new Funcionario());
 
+		unidadeRepository.deleteById(funcionario.getUnidade().getId());
+		cargoRepository.deleteById(funcionario.getCargo().getId());
 		funcionarioRepository.deleteById(funcionario.getId());
 
 		System.out.println("removido com sucesso!!");
 		System.out.println();
 	}
-
+	
 	private int exibirFuncionarios(Scanner sc) {
 		listarFuncionarios();
 		System.out.println("\n===============================");
@@ -108,15 +137,13 @@ public class FuncionarioService {
 	private Funcionario preencherFuncionario(Scanner sc, Funcionario funcionario) {
 
 		try {
-			Integer value = null;
+			Integer value = 0;
 			do {
 				System.out.print(funcionario);
 				System.out.println("\n0 - finalizar alterações");
 				System.out.print("\nDigite o valor correspondente a alteração desejada: ");
-
 				value = sc.nextInt();
-
-				if (value != null)
+				if (value != null || value instanceof Integer)
 					switch (value) {
 					case 1:
 						sc.nextLine();
@@ -158,6 +185,7 @@ public class FuncionarioService {
 			} while (value != 0);
 
 			return funcionario;
+
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
