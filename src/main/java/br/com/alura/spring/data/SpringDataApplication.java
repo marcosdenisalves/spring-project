@@ -8,15 +8,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.alura.spring.data.service.FuncionarioService;
+import br.com.alura.spring.data.service.RelatorioService;
 
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
 
 	private final FuncionarioService funcionarioService;
+	private final RelatorioService relatorioService;
+
 	private boolean system = true;
 	
-	public SpringDataApplication(FuncionarioService funcionarioService) {
+	public SpringDataApplication(FuncionarioService funcionarioService, RelatorioService relatorioService) {
 		this.funcionarioService = funcionarioService;
+		this.relatorioService = relatorioService;
 	}
 	
 	public static void main(String[] args) {
@@ -41,7 +45,7 @@ public class SpringDataApplication implements CommandLineRunner {
 			int action = sc.nextInt();
 			switch (action) {
 			case 1:
-				funcionarioService.listar(sc);
+				relatorioService.listar(sc);
 				break;
 			case 2:
 				funcionarioService.alterar(sc);

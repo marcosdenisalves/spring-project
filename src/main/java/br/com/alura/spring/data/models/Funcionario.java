@@ -1,7 +1,7 @@
 package br.com.alura.spring.data.models;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ public class Funcionario {
 	private String nome;
 	private String cpf;
 	private Double salario;
-	private Date dataContratacao;
+	private LocalDate dataContratacao;
 
 	@ManyToOne
 	private Cargo cargo;
@@ -31,7 +31,7 @@ public class Funcionario {
 	public Funcionario() {
 	}
 	
-	public Funcionario(Integer id, String nome, String cpf, Double salario, Date dataContracao, Cargo cargo,
+	public Funcionario(Integer id, String nome, String cpf, Double salario, LocalDate dataContracao, Cargo cargo,
 			Unidade unidade) {
 		this.id = id;
 		this.nome = nome;
@@ -75,11 +75,11 @@ public class Funcionario {
 		this.salario = salario;
 	}
 
-	public Date getDataContratacao() {
+	public LocalDate getDataContratacao() {
 		return dataContratacao;
 	}
 
-	public void setDataContratacao(Date dataContratacao) {
+	public void setDataContratacao(LocalDate dataContratacao) {
 		this.dataContratacao = dataContratacao;
 	}
 
@@ -101,13 +101,13 @@ public class Funcionario {
 
 	@Override
 	public String toString() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		StringBuilder builder = new StringBuilder();
 		builder.append("Dados do Funcionário")
 			.append("\n1 - Nome: ").append(nome == null ? "______" : nome)
 			.append("\n2 - Cpf: ").append(cpf == null ? "______" : cpf)
 			.append("\n3 - Salário: ").append(salario == null ? "______" : String.format("%.2f", salario))
-			.append("\n4 - Data de contracao: ").append(dataContratacao == null ? "______" : sdf.format(dataContratacao))
+			.append("\n4 - Data de contracao: ").append(dataContratacao == null ? "______" : formatter.format(dataContratacao))
 			.append("\n5 - Cargo: ").append(cargo.getDescricao() == null ? "______" : cargo.getDescricao())
 			.append("\n6 - Unidade: ").append(unidade.getNome() == null ? "______" : unidade.getNome());
 		
