@@ -65,7 +65,7 @@ public class FuncionarioService {
 		if (funcionario != null && funcionario.getId() != null)
 			System.out.println("O colaborador " + funcionario.getNome() + " salvo com sucesso!!");
 
-		relatorioService.listarFuncionarios();
+		relatorioService.listarFuncionarios(sc);
 		System.out.println();
 	}
 
@@ -86,12 +86,12 @@ public class FuncionarioService {
 	}
 
 	private int exibirFuncionarios(Scanner sc) {
-		relatorioService.listarFuncionarios();
+		relatorioService.listarFuncionarios(sc);
 		System.out.println("\n===============================");
 		System.out.print("Selecione: ");
 		return sc.nextInt();
 	}
-
+	
 	private Funcionario preencherFuncionario(Scanner sc, Funcionario funcionario) {
 
 		Integer value = 0;

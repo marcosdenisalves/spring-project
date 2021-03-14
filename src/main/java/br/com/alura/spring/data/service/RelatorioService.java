@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.spring.data.models.Funcionario;
@@ -42,7 +46,7 @@ public class RelatorioService {
 			validaLista(listarPorDataMaior(sc));			
 			break;
 		case 4:
-			validaLista(listarFuncionarios());			
+			listarFuncionarios(sc);			
 			break;
 		case 0:
 			break;
@@ -59,16 +63,34 @@ public class RelatorioService {
 		}
 	}
 
-	public List<Funcionario> listarFuncionarios() {
-		Iterable<Funcionario> funcionarios = repository.findAll();
+	public void listarFuncionarios(Scanner sc) {
+		sc.nextLine();
+		System.out.print("\nQual página deseja visualizar: ");
+		int pagina = sc.nextInt();
+		
+		Pageable pageable = PageRequest.of(pagina, 2, Sort.by(Sort.Direction.ASC, "nome"));
+		
+		Page<Funcionario> funcionarios = repository.findAll(pageable);
 		System.out.println();
-		funcionarios.forEach(System.out::println);
-		return (List<Funcionario>) funcionarios;
+
+		System.out.println("página atual: " + funcionarios.getNumber());
+		System.out.println("total de páginas " + funcionarios.getTotalPages());
+		System.out.println("total de registros carregados: " + funcionarios.getTotalElements());
+		System.out.println();
+
+		if(!funcionarios.isEmpty()) {
+			funcionarios.forEach(System.out::println);
+			System.out.println("\nDados carregados com sucesso!!");
+			System.out.println();
+		}else {
+			System.out.println("\nNenhum funcionário cadastrado.");
+			System.out.println();
+		}
 	}
 	
 	public List<Funcionario> listarPorNome(Scanner sc) {
 		sc.nextLine();
-		listarFuncionarios();
+		listarFuncionarios(sc);
 		System.out.print("\nInforme o nome do funcionário: ");
 		String nome = sc.nextLine();
 		List<Funcionario> list = repository.findByNomeLikeOrderByNomeAsc("%" + nome + "%");
