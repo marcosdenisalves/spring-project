@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.spring.data.models.Funcionario;
+import br.com.alura.spring.data.projecoes.FuncionarioProjecao;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
 
 @Service
@@ -29,7 +30,8 @@ public class RelatorioService {
 		System.out.println("1 - listar por nome");
 		System.out.println("2 - listar por nome, maior sálario e data de contratação");
 		System.out.println("3 - listar maior data de contratação");
-		System.out.println("4 - listar todos");
+		System.out.println("4 - listar apenas por id, nome e salário");
+		System.out.println("5 - listar todos");
 		System.out.println("0 - cancelar");
 		System.out.print("Selecione: ");
 		
@@ -46,6 +48,9 @@ public class RelatorioService {
 			validaLista(listarPorDataMaior(sc));			
 			break;
 		case 4:
+			listarFuncionarioProjecao();			
+			break;
+		case 5:
 			listarFuncionarios(sc);			
 			break;
 		case 0:
@@ -127,5 +132,14 @@ public class RelatorioService {
 		list.forEach(System.out::println);
 		
 		return list;
+	}
+	
+	public void listarFuncionarioProjecao() {
+		List<FuncionarioProjecao> list = repository.findFuncionarioSalario();
+		System.out.println("\nDados dos Funcionários");
+		list.forEach(f -> System.out.println(
+				"\nId: " + f.getId() + 
+				"\nNome: " + f.getNome() + 
+				"\nSalário: " + String.format("%.2f",  f.getSalario())));
 	}
 }
