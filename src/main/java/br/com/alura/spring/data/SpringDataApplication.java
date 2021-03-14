@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.alura.spring.data.service.FuncionarioService;
+import br.com.alura.spring.data.service.RelatorioFuncionarioDinamico;
 import br.com.alura.spring.data.service.RelatorioService;
 
 @SpringBootApplication
@@ -15,12 +16,15 @@ public class SpringDataApplication implements CommandLineRunner {
 
 	private final FuncionarioService funcionarioService;
 	private final RelatorioService relatorioService;
+	private final RelatorioFuncionarioDinamico relatDinamico;
 
 	private boolean system = true;
 	
-	public SpringDataApplication(FuncionarioService funcionarioService, RelatorioService relatorioService) {
+	public SpringDataApplication(FuncionarioService funcionarioService, RelatorioService relatorioService
+			, RelatorioFuncionarioDinamico relatDinamico) {
 		this.funcionarioService = funcionarioService;
 		this.relatorioService = relatorioService;
+		this.relatDinamico = relatDinamico;
 	}
 	
 	public static void main(String[] args) {
@@ -34,10 +38,11 @@ public class SpringDataApplication implements CommandLineRunner {
 
 		while (system) {
 			System.out.println("\nQual ação você quer executar?");
-			System.out.println("Digite: 1 - Listar Funcionários ");
-			System.out.println("Digite: 2 - Alterar Funcionário ");
-			System.out.println("Digite: 3 - Cadastrar Funcionário ");
-			System.out.println("Digite: 4 - Deletar Funcionário ");
+			System.out.println("Digite: 1 - Relatórios de Funcionários ");
+			System.out.println("Digite: 2 - Relatórios Dinâmicos de Funcionários ");
+			System.out.println("Digite: 3 - Alterar Funcionário ");
+			System.out.println("Digite: 4 - Cadastrar Funcionário ");
+			System.out.println("Digite: 5 - Deletar Funcionário ");
 			System.out.println("Digite: 0 - Sair ");
 	
 			System.out.print("Selecione: ");
@@ -48,12 +53,15 @@ public class SpringDataApplication implements CommandLineRunner {
 				relatorioService.listar(sc);
 				break;
 			case 2:
-				funcionarioService.alterar(sc);
+				relatDinamico.atributosDinamicos(sc);
 				break;
 			case 3:
-				funcionarioService.inserir(sc);
+				funcionarioService.alterar(sc);
 				break;
 			case 4:
+				funcionarioService.inserir(sc);
+				break;
+			case 5:
 				funcionarioService.deletar(sc);
 				break;
 			case 0:
